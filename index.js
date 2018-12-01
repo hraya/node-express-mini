@@ -41,7 +41,15 @@ server.get('/api/users/:id', (req, res) =>{
         })
 });
 
-
+server.post('/api/users', (req, res) =>{
+    const data = req.body;
+    if(!data.name || !data.bio){res.status(400).json({errorMessage:"Please provide name and bio for the user"})}
+    db.insert(data).then(user =>{
+        res.status(201).json(user)
+    }).catch(err =>{
+        res.status(500).json({error: "There was an error while saving the user to the database"})
+    })
+})
 
 server.delete('/api/users/:id', (req, res) =>{
     const { id } = req.params;
